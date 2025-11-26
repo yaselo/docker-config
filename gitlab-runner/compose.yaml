@@ -1,0 +1,11 @@
+services:
+  gitlab-runner:
+    image: gitlab/gitlab-runner:latest
+    container_name: gitlab-runner
+    restart: always
+    volumes:
+      - './config:/etc/gitlab-runner'
+      - '/var/run/docker.sock:/var/run/docker.sock'
+    # 如果 Runner 报错无法解析 gitlab 域名/IP，可以取消注释下面这行并修改 IP
+    # extra_hosts:
+    #   - "gitlab.example.com:192.168.3.15"
