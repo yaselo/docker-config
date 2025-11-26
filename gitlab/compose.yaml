@@ -1,21 +1,23 @@
 services:
   gitlab:
-    image: gitlab/gitlab-ce:latest
+    image: gitlab/gitlab-ee:latest
     container_name: gitlab
     restart: always
-    hostname: 192.168.3.11
+    hostname: '192.168.3.11'
     environment:
-      GITLAB_OMNIBUS_CONFIG: 
-        external_url 'http://192.168.3.11';
-        gitlab_rails['gitlab_shell_ssh_port'] = 2222
-        # 如果配置了 SMTP 邮件发送，可以在这里添加
+      GITLAB_OMNIBUS_CONFIG: |
+        # 改回 HTTP 以避免证书问题
+        external_url 'http://192.168.3.11:5580';
+        # 禁用 HTTPS 重定向
+        nginx['redirect_http_to_https'] = false;
+        # 设置 SSH 端口
+        gitlab_rails['gitlab_shell_ssh_port'] = 2222;
     ports:
-      - 5580:80
-      - 5443:443
-      - 2222:22
+      - '5580:5580'
+      - '5443:443'
+      - '2222:22'
     volumes:
-      - /opt/gitlab/config:/etc/gitlab
-      - /opt/gitlab/logs:/var/log/gitlab
-      - /opt/gitlab/data:/var/opt/gitlab
-    shm_size: 256m
-
+      - '/opt/gitlab/config:/etc/gitlab'
+      - '/opt/gitlab/logs:/var/log/gitlab'
+      - '/opt/gitlab/data:/var/opt/gitlab'
+    shm_size: '256m'
