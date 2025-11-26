@@ -3,20 +3,19 @@ services:
     image: gitlab/gitlab-ce:latest
     container_name: gitlab
     restart: always
-    hostname: '192.168.3.15'
+    hostname: 192.168.3.11
     environment:
-      GITLAB_OMNIBUS_CONFIG: |
-        external_url 'http://192.168.3.15'
+      GITLAB_OMNIBUS_CONFIG: 
+        external_url 'http://192.168.3.11'
         gitlab_rails['gitlab_shell_ssh_port'] = 2222
         # 如果配置了 SMTP 邮件发送，可以在这里添加
     ports:
-      - '80:80'
-      - '443:443'
-      - '2222:22'
+      - 5580:80
+      - 5443:443
+      - 2222:22
     volumes:
-      - './config:/etc/gitlab'
-      - './logs:/var/log/gitlab'
-      - './data:/var/opt/gitlab'
-    shm_size: '256m'
-
+      - /opt/gitlab/config:/etc/gitlab
+      - /opt/gitlab/logs:/var/log/gitlab
+      - /opt/gitlab/data:/var/opt/gitlab
+    shm_size: 256m
 
